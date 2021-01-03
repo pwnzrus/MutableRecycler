@@ -1,5 +1,6 @@
 package asd.android.mutablerecycler
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +19,12 @@ class CustomAdapter(var listener: OnRecyclerItemClickListener) :
 
         init {
             deleteButton.setOnClickListener {
-                listener.onClick(currentList[adapterPosition])
+                try {
+                    listener.onClick(currentList[adapterPosition])
+                } catch (e: ArrayIndexOutOfBoundsException) {
+                    Log.d("test1", "Множественные касания")
+                }
+
             }
         }
     }

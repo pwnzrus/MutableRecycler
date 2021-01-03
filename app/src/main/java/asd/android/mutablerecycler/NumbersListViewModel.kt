@@ -14,7 +14,7 @@ class NumbersListViewModel : ViewModel() {
 
 
     init {
-        numberOfItems.value = (1..5).toList() as ArrayList<Int>
+        numberOfItems.value = (1..15).toMutableList()
         var observable = Observable.interval(5, TimeUnit.SECONDS)
             .subscribeOn(Schedulers.io()).subscribe {
                 if (recentlyDeletedItems.value.isNullOrEmpty()) {
@@ -29,7 +29,7 @@ class NumbersListViewModel : ViewModel() {
     fun removeItem(item: Int) {
         numberOfItems.removeItem(item)
         recentlyDeletedItems.addItem(item)
-        Log.d("test1",recentlyDeletedItems.value.toString())
+        Log.d("test1", recentlyDeletedItems.value.toString())
     }
 
     //Добавляет в произвольную позицию элемент со значением на 1 больше существующего максимального
@@ -67,8 +67,8 @@ class NumbersListViewModel : ViewModel() {
         this.value = oldValue
     }
 
-    private fun MutableLiveData<MutableList<Int>>.addItem(item:Int){
-        val oldValue = this.value?: mutableListOf()
+    private fun MutableLiveData<MutableList<Int>>.addItem(item: Int) {
+        val oldValue = this.value ?: mutableListOf()
         oldValue.add(item)
         this.value = oldValue
     }

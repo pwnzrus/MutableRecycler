@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity(), OnRecyclerItemClickListener {
     }
 
 
-
     private fun initRecycler() {
         recyclerView = findViewById(R.id.recycler_view)
         val orientation = resources.configuration.orientation
