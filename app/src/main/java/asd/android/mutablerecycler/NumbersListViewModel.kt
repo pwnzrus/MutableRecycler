@@ -12,7 +12,6 @@ class NumbersListViewModel : ViewModel() {
     private var recentlyDeletedItems: MutableLiveData<MutableList<Int>> = MutableLiveData()
     var numberOfItems: MutableLiveData<MutableList<Int>> = MutableLiveData()
 
-
     init {
         numberOfItems.value = (1..15).toMutableList()
         var observable = Observable.interval(5, TimeUnit.SECONDS)
@@ -23,16 +22,13 @@ class NumbersListViewModel : ViewModel() {
                     numberOfItems.addNewItem(recentlyDeletedItems.getAndRemoveLastItem())
                 }
             }
-
     }
 
     fun removeItem(item: Int) {
         numberOfItems.removeItem(item)
         recentlyDeletedItems.addItem(item)
-        Log.d("test1", recentlyDeletedItems.value.toString())
     }
 
-    //Добавляет в произвольную позицию элемент со значением на 1 больше существующего максимального
     private fun MutableLiveData<MutableList<Int>>.addNewItemAtRandomIndex() {
         val oldValue = this.value ?: ArrayList()
         val item = oldValue.maxOrNull() ?: -1
@@ -40,7 +36,6 @@ class NumbersListViewModel : ViewModel() {
         this.postValue(oldValue)
     }
 
-    //Добавляет в произвольную позицию элемент с задаваемым значением(Нужно при взятии из пула удаленных)
     private fun MutableLiveData<MutableList<Int>>.addNewItem(item: Int) {
         val oldValue = this.value ?: ArrayList()
         if (oldValue.isEmpty()) {
@@ -52,7 +47,6 @@ class NumbersListViewModel : ViewModel() {
         }
     }
 
-    //Возвращает а затем удаляет последний элемент из списка
     private fun MutableLiveData<MutableList<Int>>.getAndRemoveLastItem(): Int {
         val oldValue = this.value
         val item: Int? = oldValue?.last()
