@@ -10,24 +10,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 
-class CustomAdapter(var listener: OnRecyclerItemClickListener) :
-    ListAdapter<Int, CustomAdapter.CustomViewHolder>(DiffCallbackNumber()) {
-
-    inner class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var numberTextView: TextView = itemView.findViewById(R.id.recycler_item_number)
-        var deleteButton: Button = itemView.findViewById(R.id.delete_button)
-
-        init {
-            deleteButton.setOnClickListener {
-                try {
-                    listener.onClick(currentList[adapterPosition])
-                } catch (e: ArrayIndexOutOfBoundsException) {
-                    Log.d("test1", "Множественные касания")
-                }
-
-            }
-        }
-    }
+class NumbersListAdapter(var listener: OnRecyclerItemClickListener) :
+    ListAdapter<Int, NumbersListAdapter.CustomViewHolder>(DiffCallbackNumber()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
         return CustomViewHolder(
@@ -41,6 +25,23 @@ class CustomAdapter(var listener: OnRecyclerItemClickListener) :
 
     override fun getItemCount(): Int {
         return currentList.size
+    }
+
+    inner class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var numberTextView: TextView = itemView.findViewById(R.id.recycler_item_number)
+        private var deleteButton: Button = itemView.findViewById(R.id.delete_button)
+
+        init {
+            deleteButton.setOnClickListener {
+                //Костыль для обхода краша при множественном нажатии на элемент,находящимся на этапе анимации.Лучшего решения не нашел.
+                try {
+                    listener.onClick(currentList[adapterPosition])
+                } catch (e: ArrayIndexOutOfBoundsException) {
+                    Log.e("MutableRecycler", e.toString())
+                }
+
+            }
+        }
     }
 
     class DiffCallbackNumber : DiffUtil.ItemCallback<Int>() {

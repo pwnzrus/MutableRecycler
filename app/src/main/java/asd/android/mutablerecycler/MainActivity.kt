@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity(), OnRecyclerItemClickListener {
 
     private lateinit var viewModel: NumbersListViewModel
     private lateinit var recyclerView: RecyclerView
-    private lateinit var customAdapter: CustomAdapter
+    private lateinit var numbersListAdapter: NumbersListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,8 +31,8 @@ class MainActivity : AppCompatActivity(), OnRecyclerItemClickListener {
             recyclerView.layoutManager = GridLayoutManager(this, 4)
         }
 
-        customAdapter = CustomAdapter(this)
-        recyclerView.adapter = customAdapter
+        numbersListAdapter = NumbersListAdapter(this)
+        recyclerView.adapter = numbersListAdapter
     }
 
     private fun initViewModel() {
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity(), OnRecyclerItemClickListener {
             this
         ).get(NumbersListViewModel::class.java)
         viewModel.numberOfItems.observe(this, {
-            customAdapter.submitList(it.toMutableList())
+            numbersListAdapter.submitList(it.toMutableList())
         })
     }
 
